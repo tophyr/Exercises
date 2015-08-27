@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author art.beatte
@@ -77,6 +78,7 @@ public class ElevatorBank {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                printOutStatus();
                 while (true) {
                     for (Elevator e : mElevators) {
                         // Elevator is idle
@@ -90,6 +92,9 @@ public class ElevatorBank {
                         // Advance Elevators one Turn
                         e.advance();
                     }
+                    try {
+                        TimeUnit.SECONDS.sleep(3);
+                    } catch (InterruptedException ignored) { }
                     printOutStatus();
                 }
             }
@@ -108,7 +113,13 @@ public class ElevatorBank {
             System.out.print("|");
             for (Elevator e : mElevators) {
                 if (e.getFloor() == i) {
-                    System.out.print(e.getDestination() + " |");
+                    String status;
+                    if (e.isIdle()) {
+                        status = i == 1 ? "I" : "D";
+                    } else {
+                        status = "" + e.getDestination();
+                    }
+                    System.out.print(status + " |");
                 } else {
                     System.out.print("  |");
                 }
