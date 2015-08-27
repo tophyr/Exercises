@@ -59,10 +59,12 @@ public class ElevatorBank {
 
     }
 
+    private int mFloors;
     private List<Elevator> mElevators;
     private Queue<Integer> requests;
 
-    public ElevatorBank(int numElevators) {
+    public ElevatorBank(int numFloors, int numElevators) {
+        mFloors = numFloors;
         mElevators = new ArrayList<>();
         for (int i = 0; i < numElevators; i++) {
             mElevators.add(new Elevator());
@@ -95,13 +97,25 @@ public class ElevatorBank {
     }
 
     private void printOutStatus() {
-        for (Elevator e : mElevators) {
-            if (e.isIdle()) {
-                System.out.println("Elevator at floor " + e.getFloor() + " is idle");
-            } else {
-                System.out.println("Elevator at floor " + e.getFloor() + " is going to floor " + e.getDestination());
-            }
+        String lid = "";
+        for (Elevator e: mElevators) {
+            lid += "____";
         }
+        System.out.println(lid);
+        System.out.println("| Art Plaza |");
+        System.out.println(lid);
+        for (int i = mFloors; i > 0; i--) {
+            System.out.print("|");
+            for (Elevator e : mElevators) {
+                if (e.getFloor() == i) {
+                    System.out.print(e.getDestination() + " |");
+                } else {
+                    System.out.print("  |");
+                }
+            }
+            System.out.println();
+        }
+        System.out.println(lid);
     }
 
     public void selectFloor(int floor) {
@@ -109,7 +123,7 @@ public class ElevatorBank {
     }
 
     public static void main(String[] args) {
-        ElevatorBank bank = new ElevatorBank(3);
+        ElevatorBank bank = new ElevatorBank(10, 3);
         bank.selectFloor(10);
         bank.selectFloor(3);
         bank.selectFloor(7);
