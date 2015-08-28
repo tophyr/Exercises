@@ -1,9 +1,6 @@
 package com.artbeatte.exercise;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -15,10 +12,12 @@ public class ElevatorBank {
     private class Elevator {
         private int mFloor;
         private int mDestination;
+        private Request mRequest;
 
         public Elevator() {
             mFloor = 1;
             mDestination = 1;
+            mRequest = null;
         }
 
         public int getFloor() {
@@ -33,12 +32,17 @@ public class ElevatorBank {
             return mDestination;
         }
 
-        public void setDestination(int destination) {
-            mDestination = destination;
+        public void setRequest(Request request) {
+            mRequest = request;
+            mDestination = request.mOrigin;
+        }
+
+        public Request getRequest() {
+            return mRequest;
         }
 
         public boolean isIdle() {
-            return getDestination() == getFloor();
+            return mRequest == null;
         }
 
         private void goToLobby() {
@@ -55,14 +59,32 @@ public class ElevatorBank {
                 mFloor++;
             } else if (mFloor > mDestination){
                 mFloor--;
+            } else if (mRequest != null) {
+                // we are ready to begin
+                if (mFloor == mRequest.mOrigin && mRequest.mOrigin != mRequest.mDestination) {
+                    mDestination = mRequest.mDestination;
+                // we have arrived
+                } else {
+                    mRequest = null;
+                }
             }
         }
 
     }
 
+    private class Request {
+        private int mOrigin;
+        private int mDestination;
+
+        public Request(int origin, int destination) {
+            mOrigin = origin;
+            mDestination = destination;
+        }
+    }
+
     private int mFloors;
     private List<Elevator> mElevators;
-    private Queue<Integer> requests;
+    private List<Request> mRequests;
 
     public ElevatorBank(int numFloors, int numElevators) {
         mFloors = numFloors;
@@ -70,7 +92,7 @@ public class ElevatorBank {
         for (int i = 0; i < numElevators; i++) {
             mElevators.add(new Elevator());
         }
-        requests = new ArrayBlockingQueue<>(mElevators.size());
+        mRequests = new ArrayList<>(mElevators.size());
         run();
     }
 
@@ -83,8 +105,8 @@ public class ElevatorBank {
                     for (Elevator e : mElevators) {
                         // Elevator is idle
                         if (e.isIdle()) {
-                            if (!requests.isEmpty()) {
-                                e.setDestination(requests.remove());
+                            if (!mRequests.isEmpty()) {
+                                e.setRequest(mRequests.remove(0));
                             } else {
                                 e.goToLobby();
                             }
@@ -115,7 +137,9 @@ public class ElevatorBank {
                 if (e.getFloor() == i) {
                     String status;
                     if (e.isIdle()) {
-                        status = i == 1 ? "I" : "D";
+                        status = "I";
+                    } else if (e.getRequest().mDestination == i) {
+                        status = "D";
                     } else {
                         status = "" + e.getDestination();
                     }
@@ -129,15 +153,17 @@ public class ElevatorBank {
         System.out.println(lid);
     }
 
-    public void selectFloor(int floor) {
-        requests.offer(floor);
+    public void selectFloor(int fromFloor, int toFloor) {
+        mRequests.add(new Request(fromFloor, toFloor));
     }
 
     public static void main(String[] args) {
         ElevatorBank bank = new ElevatorBank(10, 3);
-        bank.selectFloor(10);
-        bank.selectFloor(3);
-        bank.selectFloor(7);
-        bank.selectFloor(5);
+        bank.selectFloor(1, 10);
+        bank.selectFloor(10, 3);
+        bank.selectFloor(3, 7);
+        bank.selectFloor(1, 5);
+        bank.selectFloor(7, 7);
+        bank.selectFloor(8, 2);
     }
 }
