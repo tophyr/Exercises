@@ -101,7 +101,7 @@ public class ElevatorBank {
             @Override
             public void run() {
                 printOutStatus();
-                while (true) {
+                while (working()) {
                     for (Elevator e : mElevators) {
                         // Elevator is idle
                         if (e.isIdle()) {
@@ -115,12 +115,24 @@ public class ElevatorBank {
                         e.advance();
                     }
                     try {
-                        TimeUnit.SECONDS.sleep(3);
+                        TimeUnit.SECONDS.sleep(1);
                     } catch (InterruptedException ignored) { }
                     printOutStatus();
                 }
+                System.out.println();
+                System.out.println("Thank you for riding the Art Plaza Elevator System.");
+                System.out.println("Have a great day!");
+                System.exit(0);
             }
         }).start();
+    }
+
+    private boolean working() {
+        boolean working = false;
+        for (Elevator e : mElevators) {
+            working = working || (e.getRequest() != null || e.getFloor() != 1);
+        }
+        return working || !mRequests.isEmpty();
     }
 
     private void printOutStatus() {
