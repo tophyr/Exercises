@@ -1,4 +1,4 @@
-package com.artbeatte.exercise;
+package com.artbeatte.exercises.elevatorbank;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -8,79 +8,6 @@ import java.util.concurrent.TimeUnit;
  * @version 8/27/15
  */
 public class ElevatorBank {
-
-    private class Elevator {
-        private int mFloor;
-        private int mDestination;
-        private Request mRequest;
-
-        public Elevator() {
-            mFloor = 1;
-            mDestination = 1;
-            mRequest = null;
-        }
-
-        public int getFloor() {
-            return mFloor;
-        }
-
-        public void setFloor(int Floor) {
-            mFloor = Floor;
-        }
-
-        public int getDestination() {
-            return mDestination;
-        }
-
-        public void setRequest(Request request) {
-            mRequest = request;
-            mDestination = request.mOrigin;
-        }
-
-        public Request getRequest() {
-            return mRequest;
-        }
-
-        public boolean isIdle() {
-            return mRequest == null;
-        }
-
-        private void goToLobby() {
-            if (isIdle() && mFloor != 1) {
-                mDestination = 1;
-            }
-        }
-
-        /**
-         * Method used to advance an {@link com.artbeatte.exercise.ElevatorBank.Elevator} one turn in time.
-         */
-        private void advance() {
-            if (mFloor < mDestination) {
-                mFloor++;
-            } else if (mFloor > mDestination){
-                mFloor--;
-            } else if (mRequest != null) {
-                // we are ready to begin
-                if (mFloor == mRequest.mOrigin && mRequest.mOrigin != mRequest.mDestination) {
-                    mDestination = mRequest.mDestination;
-                // we have arrived
-                } else {
-                    mRequest = null;
-                }
-            }
-        }
-
-    }
-
-    private class Request {
-        private int mOrigin;
-        private int mDestination;
-
-        public Request(int origin, int destination) {
-            mOrigin = origin;
-            mDestination = destination;
-        }
-    }
 
     private int mFloors;
     private List<Elevator> mElevators;
@@ -150,7 +77,7 @@ public class ElevatorBank {
                     String status;
                     if (e.isIdle()) {
                         status = "I";
-                    } else if (e.getRequest().mDestination == i) {
+                    } else if (e.getRequest().getDestination() == i) {
                         status = "D";
                     } else {
                         status = "" + e.getDestination();
@@ -165,7 +92,7 @@ public class ElevatorBank {
         System.out.println(lid);
     }
 
-    public void selectFloor(int fromFloor, int toFloor) {
+    private void selectFloor(int fromFloor, int toFloor) {
         mRequests.add(new Request(fromFloor, toFloor));
     }
 

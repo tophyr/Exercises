@@ -1,4 +1,4 @@
-package com.artbeatte.exercise;
+package com.artbeatte.exercises.bst;
 
 /**
  * @author art.beatte
