@@ -57,9 +57,11 @@ public class Elevator {
         } else if (mRequest != null) {
             // we are ready to begin
             if (mFloor == mRequest.getOrigin() && mRequest.getOrigin() != mRequest.getDestination()) {
+                mRequest.setIsInFlight(true);
                 mDestination = mRequest.getDestination();
                 // we have arrived
             } else {
+                mRequest.setIsInFlight(false);
                 mRequest = null;
             }
         }

@@ -72,19 +72,45 @@ public class ElevatorBank {
         System.out.println(lid);
         for (int i = mFloors; i > 0; i--) {
             System.out.print("|");
+            int numMoving = 0;
+            // draw elevators
             for (Elevator e : mElevators) {
                 if (e.getFloor() == i) {
                     String status;
                     if (e.isIdle()) {
                         status = "I";
-                    } else if (e.getRequest().getDestination() == i) {
-                        status = "D";
                     } else {
-                        status = "" + e.getDestination();
+                        numMoving++;
+                        if (e.getRequest().getDestination() == i) {
+                            status = "D";
+                        } else {
+                            status = "" + e.getDestination();
+                        }
                     }
+
                     System.out.print(status + " |");
                 } else {
                     System.out.print("  |");
+                }
+            }
+            // draw requests
+            int numWaiting = 0;
+            for (Request r : mRequests) {
+                if (r.getOrigin() == i && !r.isInFlight()) {
+                    numWaiting++;
+                }
+            }
+            if (numWaiting > 0 || numMoving > 0) {
+                System.out.print(" <-- ");
+            }
+            if (numMoving > 0) {
+                for (int m = 0; m < numMoving; m++) {
+                    System.out.print("m");
+                }
+            }
+            if (numWaiting > 0) {
+                for (int o = 0; o < numWaiting; o++) {
+                    System.out.print("o");
                 }
             }
             System.out.println();

@@ -7,10 +7,12 @@ package com.artbeatte.exercises.elevatorbank;
 class Request {
     private int mOrigin;
     private int mDestination;
+    private boolean mIsInFlight;
 
     Request(int origin, int destination) {
         mOrigin = origin;
         mDestination = destination;
+        mIsInFlight = false;
     }
 
     public int getOrigin() {
@@ -27,5 +29,13 @@ class Request {
 
     public void setDestination(int mDestination) {
         this.mDestination = mDestination;
+    }
+
+    public boolean isInFlight() {
+        return mIsInFlight;
+    }
+
+    public void setIsInFlight(boolean isInFlight) {
+        this.mIsInFlight = isInFlight;
     }
 }
