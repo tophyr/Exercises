@@ -28,6 +28,18 @@ public class Sudoku {
             EMPTY_ROW
     };
 
+    private static final int[][] VALID_FILLED_BOARD = new int[][]{
+            new int[]{1, 5, 2, 4, 6, 9, 3, 7, 8},
+            new int[]{7, 8, 9, 2, 1, 3, 4, 5, 6},
+            new int[]{4, 3, 6, 5, 8, 7, 2, 9, 1},
+            new int[]{6, 1, 3, 8, 7, 2, 5, 4, 9},
+            new int[]{9, 7, 4, 1, 5, 6, 8, 2, 3},
+            new int[]{8, 2, 5, 9, 3, 4, 1, 6, 7},
+            new int[]{5, 6, 7, 3, 4, 8, 9, 1, 2},
+            new int[]{2, 4, 8, 6, 9, 1, 7, 3, 5},
+            new int[]{3, 9, 1, 7, 2, 5, 6, 8, 4},
+    };
+
     private static final int[][] BAD_ROW_BOARD = new int[][]{
             EMPTY_ROW,
             EMPTY_ROW,
@@ -95,27 +107,16 @@ public class Sudoku {
             int[] col = new int[9];
             for (int j = 0; j < 9; j++) {
                 col[j] = board[j][i];
+                // check squares
+                if (i % 3 == 0 && j % 3 == 0 && !isGroupValid(getSquare(board, i, j))) return false;
             }
             if (!isGroupValid(col)) return false;
-        }
-        // check grids
-        // Check that the subsquares contain no duplicate values
-        for (int baseRow = 0; baseRow < 9; baseRow += 3)
-        {
-            for (int baseCol = 0; baseCol < 9; baseCol += 3)
-            {
-                if (!checkSquare(board, baseRow, baseCol))
-                {
-                    return false;
-                }
-            }
         }
 
         return true;
     }
 
-    private static boolean checkSquare(int[][] grid, int baseRow, int baseCol)
-    {
+    private static int[] getSquare(int[][] grid, int baseRow, int baseCol) {
         int index = 0;
         int[] square = new int[9];
         for (int row = baseRow; row < (baseRow + 3); ++row)
@@ -125,7 +126,7 @@ public class Sudoku {
                 square[index++] = grid[row][col];
             }
         }
-        return isGroupValid(square);
+        return square;
     }
 
     private static boolean isGroupValid(int[] row) {
@@ -138,24 +139,27 @@ public class Sudoku {
     }
 
     public static void main(String[] args) {
-        int[][][] boards = new int[][][]{
-                EMPTY_BOARD,
-                BAD_ROW_BOARD,
-                BAD_COL_BOARD,
-                VALID_GROUP_BOARD,
-                BAD_GROUP_BOARD,
-                BAD_SIZE_BOARD};
-        boolean[] boardOutcomes = new boolean[]{
-                true,
-                false,
-                false,
-                true,
-                false,
-                false};
-        for (int i = 0; i < boards.length; i++) {
-            int[][] board = boards[i];
+        HashMap<Boolean, int[][][]> boards = new HashMap<Boolean, int[][][]>() {{
+            put(true, new int[][][]{
+                    EMPTY_BOARD,
+                    VALID_GROUP_BOARD,
+                    VALID_FILLED_BOARD});
+            put(false, new int[][][]{
+                    BAD_ROW_BOARD,
+                    BAD_COL_BOARD,
+                    BAD_GROUP_BOARD,
+                    BAD_SIZE_BOARD});
+        }};
+        int testCount = 1;
+        for (int i = 0; i < boards.get(true).length; i++) {
+            int[][] board = boards.get(true)[i];
             boolean isValid = isValid(board);
-            System.out.println("TEST #" + (i + 1) + ": " + (isValid == boardOutcomes[i] ? "PASSED" : "*** FAILED ***"));
+            System.out.println("TEST #" + (testCount++) + ": " + (isValid ? "PASSED" : "*** FAILED ***"));
+        }
+        for (int i = 0; i < boards.get(false).length; i++) {
+            int[][] board = boards.get(false)[i];
+            boolean isValid = isValid(board);
+            System.out.println("TEST #" + (testCount++) + ": " + (!isValid ? "PASSED" : "*** FAILED ***"));
         }
     }
 }
