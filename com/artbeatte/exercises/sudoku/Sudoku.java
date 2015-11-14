@@ -1,20 +1,79 @@
 package com.artbeatte.exercises.sudoku;
 
+import com.artbeatte.exercises.testing.MethodParameterTestCase;
+import com.artbeatte.exercises.testing.SystemTestRunner;
+import com.artbeatte.exercises.testing.TestRunner;
+
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author art.beatte
  * @version 10/9/15
  */
+@SuppressWarnings("SpellCheckingInspection")
 public class Sudoku {
+
+    private Sudoku() { /* no outside instances */ }
+
+    @SuppressWarnings("unused")
+    public static boolean isValid(int[][] board) {
+        // check board size
+        if (board.length != 9) return false;
+        for (int i = 0; i < 9; i++) {
+            int[] row = board[i];
+            if (row.length != 9) return false;
+            // check rows
+            if (!isGroupValid(row)) return false;
+            // check columns
+            int[] col = new int[9];
+            for (int j = 0; j < 9; j++) {
+                col[j] = board[j][i];
+                // check squares
+                if (i % 3 == 0 && j % 3 == 0 && !isGroupValid(getSquare(board, i, j))) return false;
+            }
+            if (!isGroupValid(col)) return false;
+        }
+
+        return true;
+    }
+
+    private static int[] getSquare(int[][] grid, int baseRow, int baseCol) {
+        int index = 0;
+        int[] square = new int[9];
+        for (int row = baseRow; row < (baseRow + 3); ++row)
+        {
+            for (int col = baseCol; col < (baseCol + 3); ++col)
+            {
+                square[index++] = grid[row][col];
+            }
+        }
+        return square;
+    }
+
+    private static boolean isGroupValid(int[] row) {
+        HashMap<Integer, Integer> buckets = new HashMap<>();
+        for (int k : row) {
+            Integer valid = buckets.put(k, k);
+            if (valid != null && valid > 0) return false;
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        TestRunner testRunner = new SystemTestRunner();
+        for (int[][] test : TESTS.keySet()) {
+            testRunner.addTestCase(
+                    new MethodParameterTestCase<>(new Sudoku(), "isValid", int[][].class, test, TESTS.get(test)));
+        }
+        testRunner.runTests();
+    }
 
     private static final int[] EMPTY_ROW = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     private static final int[] BAD_ROW = new int[]{0, 1, 0, 0, 1, 0, 0, 0, 0};
 
     private static final int[] VALID_ROW = new int[]{0, 0, 1, 0, 0, 0, 0, 0, 0};
-
-    private static final int[] GOOD_ROW = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
 
     private static final int[][] EMPTY_BOARD = new int[][]{
             EMPTY_ROW,
@@ -95,71 +154,14 @@ public class Sudoku {
             new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
     };
 
-    private static boolean isValid(int[][] board) {
-        // check board size
-        if (board.length != 9) return false;
-        for (int i = 0; i < 9; i++) {
-            int[] row = board[i];
-            if (row.length != 9) return false;
-            // check rows
-            if (!isGroupValid(row)) return false;
-            // check columns
-            int[] col = new int[9];
-            for (int j = 0; j < 9; j++) {
-                col[j] = board[j][i];
-                // check squares
-                if (i % 3 == 0 && j % 3 == 0 && !isGroupValid(getSquare(board, i, j))) return false;
-            }
-            if (!isGroupValid(col)) return false;
-        }
-
-        return true;
-    }
-
-    private static int[] getSquare(int[][] grid, int baseRow, int baseCol) {
-        int index = 0;
-        int[] square = new int[9];
-        for (int row = baseRow; row < (baseRow + 3); ++row)
-        {
-            for (int col = baseCol; col < (baseCol + 3); ++col)
-            {
-                square[index++] = grid[row][col];
-            }
-        }
-        return square;
-    }
-
-    private static boolean isGroupValid(int[] row) {
-        HashMap<Integer, Integer> buckets = new HashMap<>();
-        for (int k : row) {
-            Integer valid = buckets.put(k, k);
-            if (valid != null && valid > 0) return false;
-        }
-        return true;
-    }
-
-    public static void main(String[] args) {
-        HashMap<Boolean, int[][][]> boards = new HashMap<Boolean, int[][][]>() {{
-            put(true, new int[][][]{
-                    EMPTY_BOARD,
-                    VALID_GROUP_BOARD,
-                    VALID_FILLED_BOARD});
-            put(false, new int[][][]{
-                    BAD_ROW_BOARD,
-                    BAD_COL_BOARD,
-                    BAD_GROUP_BOARD,
-                    BAD_SIZE_BOARD});
-        }};
-        int testCount = 1;
-        for (int i = 0; i < boards.get(true).length; i++) {
-            int[][] board = boards.get(true)[i];
-            boolean isValid = isValid(board);
-            System.out.println("TEST #" + (testCount++) + ": " + (isValid ? "PASSED" : "*** FAILED ***"));
-        }
-        for (int i = 0; i < boards.get(false).length; i++) {
-            int[][] board = boards.get(false)[i];
-            boolean isValid = isValid(board);
-            System.out.println("TEST #" + (testCount++) + ": " + (!isValid ? "PASSED" : "*** FAILED ***"));
-        }
+    private static final Map<int[][], Boolean> TESTS = new HashMap<>();
+    static {
+        TESTS.put(EMPTY_BOARD, true);
+        TESTS.put(VALID_FILLED_BOARD, true);
+        TESTS.put(BAD_ROW_BOARD, false);
+        TESTS.put(BAD_COL_BOARD, false);
+        TESTS.put(VALID_GROUP_BOARD, true);
+        TESTS.put(BAD_GROUP_BOARD, false);
+        TESTS.put(BAD_SIZE_BOARD, false);
     }
 }
