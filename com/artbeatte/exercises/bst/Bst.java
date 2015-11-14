@@ -8,24 +8,7 @@ import java.util.StringTokenizer;
  */
 public class Bst<T extends Comparable<T>> {
 
-    private class Node {
-        T data;
-        Node left;
-        Node right;
-
-        Node() {
-            data = null;
-            left = null;
-            right = null;
-        }
-
-        Node(T data) {
-            this();
-            this.data = data;
-        }
-    }
-
-    private Node mRoot;
+    private Node<T> mRoot;
 
     public Bst() {
         mRoot = null;
@@ -44,26 +27,26 @@ public class Bst<T extends Comparable<T>> {
         if (value == null) {
             ret = false;
         } else if (mRoot == null) {
-            mRoot = new Node(value);
+            mRoot = new Node<>(value);
         } else {
             mRoot =  add(mRoot, value);
         }
         return ret;
     }
 
-    private Node add(Node root, T value) {
-        int comp = root.data.compareTo(value);
+    private Node<T> add(Node<T> root, T value) {
+        int comp = root.getData().compareTo(value);
         if (comp < 0) {
-            if (root.left == null) {
-                root.left = new Node(value);
+            if (root.getLeftNode() == null) {
+                root.setLeftNode(value);
             } else {
-                root.left =  add(root.left, value);
+                root.setLeftNode(add(root.getLeftNode(), value));
             }
         } if (comp > 0) {
-            if (root.right == null) {
-                root.right = new Node(value);
+            if (root.getRightNode() == null) {
+                root.setRightNode(value);
             } else {
-                root.right = add(root.right, value);
+                root.setRightNode(add(root.getRightNode(), value));
             }
         }
         return root;
@@ -71,36 +54,36 @@ public class Bst<T extends Comparable<T>> {
 
     public T remove(T value) {
         if (value == null || mRoot == null) return null;
-        Node found = find(mRoot, value);
+        Node<T> found = find(mRoot, value);
         mRoot = remove(mRoot, value);
-        return found == null ? null : found.data;
+        return found == null ? null : found.getData();
     }
 
-    private Node remove(Node root, T value) {
-        int comp = root.data.compareTo(value);
+    private Node<T> remove(Node<T> root, T value) {
+        int comp = root.getData().compareTo(value);
         if (comp < 0) {
-            root.left = remove(root.left, value);
+            root.setLeftNode(remove(root.getLeftNode(), value));
         } else if (comp > 0) {
-            root.right = remove(root.right, value);
+            root.setRightNode(remove(root.getRightNode(), value));
         } else {
             root = handleRemoval(root);
         }
         return root;
     }
 
-    private Node handleRemoval(Node root) {
-        if (root.left == null && root.right == null) {
+    private Node<T> handleRemoval(Node<T> root) {
+        if (root.getLeftNode() == null && root.getRightNode() == null) {
             root = null;
-        } else if (root.left == null) {
-            root = root.right;
-        } else if(root.right == null) {
-            root = root.left;
+        } else if (root.getLeftNode() == null) {
+            root = root.getRightNode();
+        } else if(root.getRightNode() == null) {
+            root = root.getLeftNode();
         } else {
-            Node rightsLeftMost = root.right;
-            while (rightsLeftMost.left != null) {
-                rightsLeftMost = rightsLeftMost.left;
+            Node<T> rightsLeftMost = root.getRightNode();
+            while (rightsLeftMost.getLeftNode() != null) {
+                rightsLeftMost = rightsLeftMost.getLeftNode();
             }
-            rightsLeftMost.left = root.right;
+            rightsLeftMost.setLeftNode(root.getRightNode());
             root = rightsLeftMost;
         }
         return root;
@@ -110,13 +93,13 @@ public class Bst<T extends Comparable<T>> {
         return find(mRoot, value) != null;
     }
 
-    private Node find(Node root, T value) {
+    private Node<T> find(Node<T> root, T value) {
         if (root == null) return null;
-        int comp = root.data.compareTo(value);
+        int comp = root.getData().compareTo(value);
         if (comp < 0) {
-            return find(root.left, value);
+            return find(root.getLeftNode(), value);
         } else if (comp > 0) {
-            return find(root.right, value);
+            return find(root.getRightNode(), value);
         } else {
             return root;
         }
@@ -128,8 +111,8 @@ public class Bst<T extends Comparable<T>> {
 
     private int count(Node root) {
         if (root == null) return 0;
-        int leftCount = count(root.left);
-        int rightCount = count(root.right);
+        int leftCount = count(root.getLeftNode());
+        int rightCount = count(root.getRightNode());
         return leftCount + rightCount + 1;
     }
 
@@ -144,20 +127,21 @@ public class Bst<T extends Comparable<T>> {
             sb.append("# ");
             return;
         }
-        sb.append(root.data).append(" ");
-        serialize(root.left, sb);
-        serialize(root.right, sb);
+        sb.append(root.getData()).append(" ");
+        serialize(root.getLeftNode(), sb);
+        serialize(root.getRightNode(), sb);
     }
 
-    private Node deserialize(StringTokenizer st) {
+    private Node<T> deserialize(StringTokenizer st) {
         if (!st.hasMoreElements()) return null;
         String value = st.nextToken();
         if (value.equals("#")) {
             return null;
         }
-        Node root = new Node((T) value);
-        root.left = deserialize(st);
-        root.right = deserialize(st);
+        @SuppressWarnings("unchecked")
+        Node<T> root = new Node<>((T) value);
+        root.setLeftNode(deserialize(st));
+        root.setRightNode(deserialize(st));
         return root;
     }
 
