@@ -35,7 +35,7 @@ public class Bst<T extends Comparable<T>> {
     }
 
     private Node<T> add(Node<T> root, T value) {
-        int comp = root.getData().compareTo(value);
+        int comp = root.getValue().compareTo(value);
         if (comp < 0) {
             if (root.getLeftNode() == null) {
                 root.setLeftNode(value);
@@ -56,11 +56,11 @@ public class Bst<T extends Comparable<T>> {
         if (value == null || mRoot == null) return null;
         Node<T> found = find(mRoot, value);
         mRoot = remove(mRoot, value);
-        return found == null ? null : found.getData();
+        return found == null ? null : found.getValue();
     }
 
     private Node<T> remove(Node<T> root, T value) {
-        int comp = root.getData().compareTo(value);
+        int comp = root.getValue().compareTo(value);
         if (comp < 0) {
             root.setLeftNode(remove(root.getLeftNode(), value));
         } else if (comp > 0) {
@@ -95,7 +95,7 @@ public class Bst<T extends Comparable<T>> {
 
     private Node<T> find(Node<T> root, T value) {
         if (root == null) return null;
-        int comp = root.getData().compareTo(value);
+        int comp = root.getValue().compareTo(value);
         if (comp < 0) {
             return find(root.getLeftNode(), value);
         } else if (comp > 0) {
@@ -127,7 +127,7 @@ public class Bst<T extends Comparable<T>> {
             sb.append("# ");
             return;
         }
-        sb.append(root.getData()).append(" ");
+        sb.append(root.getValue()).append(" ");
         serialize(root.getLeftNode(), sb);
         serialize(root.getRightNode(), sb);
     }

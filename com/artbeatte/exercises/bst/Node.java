@@ -4,18 +4,18 @@ package com.artbeatte.exercises.bst;
  * @author art.beatte
  * @version 11/13/15
  */
-class Node<T extends Comparable<T>> {
+public class Node<T extends Comparable<T>> {
 
-    private T mData;
+    private T mValue;
     private Node<T> mLeft;
     private Node<T> mRight;
 
-    public Node(T data) {
-        this.mData = data;
+    public Node(T value) {
+        this.mValue = value;
     }
 
-    public T getData() {
-        return mData;
+    public T getValue() {
+        return mValue;
     }
 
     public Node<T> getLeftNode() {

@@ -1,5 +1,7 @@
 package com.artbeatte.exercises.tree_manipulation;
 
+import com.artbeatte.exercises.bst.Node;
+
 import java.awt.*;
 import java.util.HashMap;
 
@@ -7,18 +9,9 @@ import java.util.HashMap;
  * @author art.beatte
  * @version 11/11/15
  */
-public class BST<T extends Comparable> {
+public class BST<T extends Comparable<T>> {
 
-    private class Node {
-        Node left, right;
-        T value;
-
-        Node(T value) {
-            this.value = value;
-        }
-    }
-
-    private Node mRoot;
+    private Node<T> mRoot;
 
     /* constructor */
     public BST() { }
@@ -26,24 +19,24 @@ public class BST<T extends Comparable> {
     // region add
     public void add(T value) {
         if (mRoot == null) {
-            mRoot = new Node(value);
+            mRoot = new Node<>(value);
         } else {
             add(mRoot, value);
         }
     }
 
-    private void add(Node root, T value) {
-        if (value.compareTo(root.value) < 0) {
-            if (root.left == null) {
-                root.left = new Node(value);
+    private void add(Node<T> root, T value) {
+        if (value.compareTo(root.getValue()) < 0) {
+            if (root.getLeftNode() == null) {
+                root.setLeftNode(value);
             } else {
-                add(root.left, value);
+                add(root.getLeftNode(), value);
             }
         } else {
-            if (root.right == null) {
-                root.right = new Node(value);
+            if (root.getRightNode() == null) {
+                root.setRightNode(value);
             } else {
-                add(root.right, value);
+                add(root.getRightNode(), value);
             }
         }
     }
@@ -66,8 +59,8 @@ public class BST<T extends Comparable> {
 
     private int getDepth(Node root) {
         if (root == null) return 0;
-        int lDepth = getDepth(root.left);
-        int rDepth = getDepth(root.right);
+        int lDepth = getDepth(root.getLeftNode());
+        int rDepth = getDepth(root.getRightNode());
         return 1 + Math.max(lDepth , rDepth);
     }
     // endregion
@@ -96,8 +89,8 @@ public class BST<T extends Comparable> {
         if (root == null) return;
         if (center < point.x) point.x = center;
         if (center > point.y) point.y = center;
-        getEdgeWidth(root.left, center - 1, point);
-        getEdgeWidth(root.right, center + 1, point);
+        getEdgeWidth(root.getLeftNode(), center - 1, point);
+        getEdgeWidth(root.getRightNode(), center + 1, point);
     }
     // endregion
 
@@ -132,8 +125,8 @@ public class BST<T extends Comparable> {
         } else {
             depths.put(depth, ++recordedDepth);
         }
-        getMaxWidth(root.left, depth + 1, depths);
-        getMaxWidth(root.right, depth + 1, depths);
+        getMaxWidth(root.getLeftNode(), depth + 1, depths);
+        getMaxWidth(root.getRightNode(), depth + 1, depths);
     }
     // endregion
 
