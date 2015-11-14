@@ -1,4 +1,4 @@
-package com.artbeatte.exercises.hash;
+package com.artbeatte.exercises.hashs;
 
 import java.util.*;
 

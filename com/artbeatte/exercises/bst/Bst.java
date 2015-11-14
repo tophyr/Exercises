@@ -374,6 +374,7 @@ public class Bst<T extends Comparable<T>> {
         testRunner.addTestCase(new MethodTestCase<>(STRING, "getDepth", 2));
         testRunner.addTestCase(new MethodTestCase<>(STRING, "getEdgeWidth", 2));
         testRunner.addTestCase(new MethodTestCase<>(STRING, "getMaxWidth", 2));
+
         testRunner.runTests();
     }
 

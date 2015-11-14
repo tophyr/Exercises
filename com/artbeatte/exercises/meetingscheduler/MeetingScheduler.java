@@ -1,4 +1,4 @@
-package com.artbeatte.exercises;
+package com.artbeatte.exercises.meetingscheduler;
 
 import com.sun.istack.internal.NotNull;
 
