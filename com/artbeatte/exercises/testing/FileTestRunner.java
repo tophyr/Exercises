@@ -1,6 +1,8 @@
 package com.artbeatte.exercises.testing;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * @author art.beatte
@@ -19,7 +21,12 @@ public class FileTestRunner extends BaseTestRunner {
         int failures = 0;
         printToFile(getBanner("   Starting Tests    "));
         for (TestCase test : mTestCases) {
-            boolean success = test.execute();
+            boolean success = false;
+            try {
+                success = test.execute(new FileOutputStream(mFile, true));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             if (!success) failures ++;
             printToFile(test.getName() + " test: " + (success ? "PASSES" : "FAILS") + "\n");
         }

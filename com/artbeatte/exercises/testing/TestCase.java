@@ -1,5 +1,8 @@
 package com.artbeatte.exercises.testing;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 /**
  * @author art.beatte
  * @version 11/13/15
@@ -15,5 +18,5 @@ public interface TestCase {
      * Executes the test
      * @return true if the test was successful.
      */
-    boolean execute();
+    boolean execute(OutputStream outputStream) throws IOException;
 }

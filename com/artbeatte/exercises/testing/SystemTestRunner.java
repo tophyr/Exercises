@@ -1,5 +1,7 @@
 package com.artbeatte.exercises.testing;
 
+import java.io.IOException;
+
 /**
  * @author art.beatte
  * @version 11/13/15
@@ -11,7 +13,12 @@ public class SystemTestRunner extends BaseTestRunner {
         int failures = 0;
         System.out.print(getBanner("   Starting Tests    "));
         for (TestCase test : mTestCases) {
-            boolean success = test.execute();
+            boolean success = false;
+            try {
+                success = test.execute(System.out);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             if (!success) failures ++;
             System.out.println(test.getName() + " test: " + (success ? "PASSES" : "FAILS"));
         }

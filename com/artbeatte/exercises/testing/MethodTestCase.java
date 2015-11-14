@@ -1,5 +1,6 @@
 package com.artbeatte.exercises.testing;
 
+import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -24,7 +25,7 @@ public class MethodTestCase<V> implements TestCase {
     }
 
     @Override
-    public boolean execute() {
+    public boolean execute(OutputStream outputStream) {
         try {
             return isSuccess(mTestClass.getClass().getMethod(mTestMethod).invoke(mTestClass));
         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {

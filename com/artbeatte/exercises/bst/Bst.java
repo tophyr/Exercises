@@ -1,9 +1,11 @@
 package com.artbeatte.exercises.bst;
 
 import com.artbeatte.exercises.testing.*;
-import com.artbeatte.exercises.testing.ExternalMethodTestCase;
+import com.artbeatte.exercises.testing.ExternalTestCase;
 import com.artbeatte.exercises.testing.MethodTestCase;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
@@ -268,83 +270,83 @@ public class Bst<T extends Comparable<T>> {
         final boolean[] sizeSuccess = {false};
 
         TestRunner testRunner = new SystemTestRunner();
-        // alternately:      `= new FileTestRunner("com/artbeatte/exercises/testing/testFile.txt");`
-        testRunner.addTestCase(new ExternalMethodTestCase("add", new ExternalMethodTestCase.ExternalTest() {
+        // alternately:      `= new FileTestRunner("testFile.txt");`
+        testRunner.addTestCase(new ExternalTestCase("add", new ExternalTestCase.ExternalTest() {
             @Override
-            public boolean execute() {
+            public boolean execute(OutputStream os) throws IOException {
                 // setup
                 boolean addSuccess;
-                System.out.println("Initial state: " + bst.serialize());
+                os.write(("Initial state: " + bst.serialize() + "\n").getBytes());
 
-                System.out.print("Populating");
+                os.write("Populating".getBytes());
                 sizeSuccess[0] = bst.size() == 0;
                 bst.add(5);
-                System.out.print(".");
+                os.write(".".getBytes());
                 sizeSuccess[0] = sizeSuccess[0] && bst.size() == 1;
                 addSuccess = bst.contains(5);
                 bst.add(34);
-                System.out.print(".");
+                os.write(".".getBytes());
                 bst.add(10);
-                System.out.print(".");
+                os.write(".".getBytes());
                 sizeSuccess[0] = sizeSuccess[0] && bst.size() == 3;
                 addSuccess = addSuccess && bst.contains(34);
                 addSuccess = addSuccess && bst.contains(10);
                 bst.add(2);
-                System.out.print(".");
+                os.write(".".getBytes());
                 bst.add(200);
-                System.out.print(".");
+                os.write(".".getBytes());
                 bst.add(44);
-                System.out.print(".");
-                System.out.println();
+                os.write(".".getBytes());
+                os.write("\n".getBytes());
                 sizeSuccess[0] = sizeSuccess[0] && bst.size() == 6;
                 addSuccess = addSuccess && bst.contains(2);
                 addSuccess = addSuccess && bst.contains(200);
                 addSuccess = addSuccess && bst.contains(44);
-                System.out.println();
+                os.write("\n".getBytes());
 
                 return addSuccess;
             }
         }));
-        testRunner.addTestCase(new ExternalMethodTestCase("size", new ExternalMethodTestCase.ExternalTest() {
+        testRunner.addTestCase(new ExternalTestCase("size", new ExternalTestCase.ExternalTest() {
             @Override
-            public boolean execute() {
+            public boolean execute(OutputStream os) {
                 return sizeSuccess[0];
             }
         }));
-        testRunner.addTestCase(new ExternalMethodTestCase("serialize", new ExternalMethodTestCase.ExternalTest() {
+        testRunner.addTestCase(new ExternalTestCase("serialize", new ExternalTestCase.ExternalTest() {
             @Override
-            public boolean execute() {
-                System.out.println();
-                System.out.println("State: " + bst.serialize());
+            public boolean execute(OutputStream os) throws IOException {
+                os.write("\n".getBytes());
+                os.write(("State: " + bst.serialize() + "\n").getBytes());
                 boolean success = bst.serialize().contentEquals(new Bst<Integer>(bst.serialize()).serialize());
-                System.out.println("State: " + bst.serialize());
-                System.out.println();
+                os.write(("State: " + bst.serialize() + "\n").getBytes());
+                os.write("\n".getBytes());
 
                 return success;
             }
         }));
 //        testRunner.addTestCase(new MethodTestCase<>(bst, "serialize", new Bst<Integer>(bst.serialize()).serialize()));
-        testRunner.addTestCase(new ExternalMethodTestCase("remove", new ExternalMethodTestCase.ExternalTest() {
+        testRunner.addTestCase(new ExternalTestCase("remove", new ExternalTestCase.ExternalTest() {
             @Override
-            public boolean execute() {
+            public boolean execute(OutputStream os) throws IOException {
                 // teardown
-                System.out.println();
-                System.out.print("Resetting");
+                os.write("\n".getBytes());
+                os.write("Resetting".getBytes());
                 bst.remove(10);
-                System.out.print(".");
+                os.write(".".getBytes());
                 bst.remove(44);
-                System.out.print(".");
+                os.write(".".getBytes());
                 bst.remove(200);
-                System.out.print(".");
+                os.write(".".getBytes());
                 bst.remove(34);
-                System.out.print(".");
+                os.write(".".getBytes());
                 bst.remove(2);
-                System.out.print(".");
+                os.write(".".getBytes());
                 bst.remove(5);
-                System.out.println();
-                System.out.println();
-                System.out.println("State: " + bst.serialize());
-                System.out.println();
+                os.write("\n".getBytes());
+                os.write("\n".getBytes());
+                os.write(("State: " + bst.serialize() + "\n").getBytes());
+                os.write("\n".getBytes());
 
                 return bst.isEmpty();
             }
