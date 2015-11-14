@@ -10,6 +10,7 @@ import java.util.StringTokenizer;
 /**
  * @author art.beatte
  * @version 10/18/15
+ * @version 11/14/15
  */
 public class Bst<T extends Comparable<T>> {
 
@@ -266,7 +267,8 @@ public class Bst<T extends Comparable<T>> {
         final Bst<Integer> bst = new Bst<>();
         final boolean[] sizeSuccess = {false};
 
-        SystemTestRunner testRunner = new SystemTestRunner();
+        TestRunner testRunner = new SystemTestRunner();
+        // alternately:      `= new FileTestRunner("com/artbeatte/exercises/testing/testFile.txt");`
         testRunner.addTestCase(new ExternalMethodTestCase("add", new ExternalMethodTestCase.ExternalTest() {
             @Override
             public boolean execute() {
@@ -351,9 +353,25 @@ public class Bst<T extends Comparable<T>> {
         testRunner.addTestCase(new MethodTestCase<>(LARGE, "getEdgeWidth", 4));
         testRunner.addTestCase(new MethodTestCase<>(LARGE, "getMaxWidth", 3));
 
+        testRunner.addTestCase(new MethodTestCase<>(EMPTY, "getDepth", 0));
+        testRunner.addTestCase(new MethodTestCase<>(EMPTY, "getEdgeWidth", 0));
+        testRunner.addTestCase(new MethodTestCase<>(EMPTY, "getMaxWidth", 0));
+
         testRunner.addTestCase(new MethodTestCase<>(SMALL, "getDepth", 2));
         testRunner.addTestCase(new MethodTestCase<>(SMALL, "getEdgeWidth", 2));
         testRunner.addTestCase(new MethodTestCase<>(SMALL, "getMaxWidth", 2));
+
+        testRunner.addTestCase(new MethodTestCase<>(SINGLE, "getDepth", 1));
+        testRunner.addTestCase(new MethodTestCase<>(SINGLE, "getEdgeWidth", 0));
+        testRunner.addTestCase(new MethodTestCase<>(SINGLE, "getMaxWidth", 1));
+
+        testRunner.addTestCase(new MethodTestCase<>(X_LARGE, "getDepth", 7));
+        testRunner.addTestCase(new MethodTestCase<>(X_LARGE, "getEdgeWidth", 5));
+        testRunner.addTestCase(new MethodTestCase<>(X_LARGE, "getMaxWidth", 3));
+
+        testRunner.addTestCase(new MethodTestCase<>(STRING, "getDepth", 2));
+        testRunner.addTestCase(new MethodTestCase<>(STRING, "getEdgeWidth", 2));
+        testRunner.addTestCase(new MethodTestCase<>(STRING, "getMaxWidth", 2));
         testRunner.runTests();
     }
 
@@ -388,5 +406,62 @@ public class Bst<T extends Comparable<T>> {
         SMALL.add(2);
         SMALL.add(1);
         SMALL.add(3);
+    }
+
+    private static Bst<Integer> EMPTY = new Bst<>();
+
+    /**
+     *  0
+     */
+    private static Bst<Integer> SINGLE = new Bst<>();
+    static {
+        SINGLE.add(14);
+    }
+
+    /**
+     *      0
+     *    /  \
+     *   0    0
+     *  /    / \
+     * 0    0   0
+     *      /   /
+     *     0   0
+     *    / \   \
+     *   0  0   0
+     *  /    \
+     * 0     0
+     *       \
+     *        0
+     */
+    private static Bst<Integer> X_LARGE = new Bst<>();
+    static {
+        X_LARGE.add(3);
+        X_LARGE.add(2);
+        X_LARGE.add(1);
+
+        X_LARGE.add(11);
+        X_LARGE.add(10);
+        X_LARGE.add(6);
+        X_LARGE.add(7);
+        X_LARGE.add(8);
+        X_LARGE.add(9);
+        X_LARGE.add(5);
+        X_LARGE.add(4);
+
+        X_LARGE.add(14);
+        X_LARGE.add(12);
+        X_LARGE.add(13);
+    }
+
+    /**
+     *   0
+     *  / \
+     * 0  0
+     */
+    private static Bst<String> STRING = new Bst<>();
+    static {
+        STRING.add("Beta");
+        STRING.add("Alpha");
+        STRING.add("Gamma");
     }
 }
