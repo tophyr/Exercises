@@ -1,5 +1,10 @@
 package com.artbeatte.exercises.bst;
 
+import com.artbeatte.exercises.testing.*;
+import com.artbeatte.exercises.testing.ExternalMethodTestCase;
+import com.artbeatte.exercises.testing.MethodTestCase;
+
+import java.util.HashMap;
 import java.util.StringTokenizer;
 
 /**
@@ -10,6 +15,7 @@ public class Bst<T extends Comparable<T>> {
 
     private Node<T> mRoot;
 
+    // region init
     public Bst() {
         mRoot = null;
     }
@@ -21,17 +27,19 @@ public class Bst<T extends Comparable<T>> {
             mRoot = deserialize(st);
         }
     }
+    // endregion
 
+    // region add
     public boolean add(T value) {
-        boolean ret = true;
+        boolean success = true;
         if (value == null) {
-            ret = false;
+            success = false;
         } else if (mRoot == null) {
             mRoot = new Node<>(value);
         } else {
             mRoot =  add(mRoot, value);
         }
-        return ret;
+        return success;
     }
 
     private Node<T> add(Node<T> root, T value) {
@@ -51,7 +59,9 @@ public class Bst<T extends Comparable<T>> {
         }
         return root;
     }
+    // endregion
 
+    // region remove
     public T remove(T value) {
         if (value == null || mRoot == null) return null;
         Node<T> found = find(mRoot, value);
@@ -88,7 +98,9 @@ public class Bst<T extends Comparable<T>> {
         }
         return root;
     }
+    // endregion
 
+    // region search
     public boolean contains(T value) {
         return find(mRoot, value) != null;
     }
@@ -104,6 +116,12 @@ public class Bst<T extends Comparable<T>> {
             return root;
         }
     }
+    // endregion
+
+    // region size
+    public boolean isEmpty() {
+        return mRoot == null;
+    }
 
     public int size() {
         return count(mRoot);
@@ -115,7 +133,9 @@ public class Bst<T extends Comparable<T>> {
         int rightCount = count(root.getRightNode());
         return leftCount + rightCount + 1;
     }
+    // endregion
 
+    // region serialization
     public String serialize() {
         StringBuilder sb = new StringBuilder();
         serialize(mRoot, sb);
@@ -144,83 +164,229 @@ public class Bst<T extends Comparable<T>> {
         root.setRightNode(deserialize(st));
         return root;
     }
+    // endregion
 
-    public boolean isEmpty() {
-        return mRoot == null;
+    // region depth
+    /**
+     * Depth is the deepest level reached by the tree
+     *   0
+     *  / \
+     * 0   0
+     *    / \
+     *   0   0
+     * The preceding tree has a depth of 3.
+     * @return the depth
+     */
+    @SuppressWarnings("unused")
+    public int getDepth() {
+        return getDepth(mRoot);
     }
+
+    private int getDepth(Node root) {
+        if (root == null) return 0;
+        int lDepth = getDepth(root.getLeftNode());
+        int rDepth = getDepth(root.getRightNode());
+        return 1 + Math.max(lDepth , rDepth);
+    }
+    // endregion
+
+    // region width
+    /**
+     * Width is defined as the number of edges between the left most and right most nodes.
+     *   0
+     *  / \
+     * 0   0
+     *    / \
+     *   0   0
+     *  /
+     * 0
+     * The proceeding tree has a width of 3.
+     *  @return the width
+     */
+    @SuppressWarnings("unused")
+    public int getEdgeWidth() {
+        int[] xy=  new int[2];
+        getEdgeWidth(mRoot, 0, xy);
+        return Math.abs(xy[1] - xy[0]);
+    }
+
+    /**
+     * Calculates the edge width
+     * @param root the root {@link Node}
+     * @param center the distance from the root
+     * @param xy a {@code int[2]} containing the left and right most values.
+     */
+    private void getEdgeWidth(Node root, int center, int[] xy) {
+        if (root == null) return;
+        if (center < xy[0]) xy[0] = center;
+        if (center > xy[1]) xy[1] = center;
+        getEdgeWidth(root.getLeftNode(), center - 1, xy);
+        getEdgeWidth(root.getRightNode(), center + 1, xy);
+    }
+    // endregion
+
+    // region max width
+    /**
+     * Max Width is defined as the most number of nodes of the same depth.
+     *     0
+     *    / \
+     *   0  0
+     *  /  / \
+     * 0  0   0
+     *   /   /
+     *  0   0
+     * The preceding tree has a max width of 3.
+     * @return the max width
+     */
+    @SuppressWarnings("unused")
+    public int getMaxWidth() {
+        HashMap<Integer, Integer> depths = new HashMap<>();
+        getMaxWidth(mRoot, 0, depths);
+        int width = 0;
+        for (Integer key : depths.keySet()) {
+            if (depths.get(key) > width) width = depths.get(key);
+        }
+        return width;
+    }
+
+    public void getMaxWidth(Node root, int depth, HashMap<Integer, Integer> depths) {
+        if (root == null) return;
+        Integer recordedDepth = depths.get(depth);
+        if (recordedDepth == null) {
+            depths.put(depth, 1);
+        } else {
+            depths.put(depth, ++recordedDepth);
+        }
+        getMaxWidth(root.getLeftNode(), depth + 1, depths);
+        getMaxWidth(root.getRightNode(), depth + 1, depths);
+    }
+    // endregion
 
     public static void main(String[] args) {
-        // print header
-        System.out.println();
-        System.out.println("====================");
-        System.out.println("Let The Games Begin!");
-        System.out.println("====================");
-        System.out.println();
+        final Bst<Integer> bst = new Bst<>();
+        final boolean[] sizeSuccess = {false};
 
-        Bst<Integer> bst = new Bst<>();
-        // setup
-        boolean addSuccess;
-        boolean sizeSuccess;
-        System.out.println("Initial state: " + bst.serialize());
+        SystemTestRunner testRunner = new SystemTestRunner();
+        testRunner.addTestCase(new ExternalMethodTestCase("add", new ExternalMethodTestCase.ExternalTest() {
+            @Override
+            public boolean execute() {
+                // setup
+                boolean addSuccess;
+                System.out.println("Initial state: " + bst.serialize());
 
-        System.out.print("Populating");
-        sizeSuccess = bst.size() == 0;
-        bst.add(5);
-        System.out.print(".");
-        sizeSuccess = sizeSuccess && bst.size() == 1;
-        addSuccess = bst.contains(5);
-        bst.add(34);
-        System.out.print(".");
-        bst.add(10);
-        System.out.print(".");
-        sizeSuccess = sizeSuccess && bst.size() == 3;
-        addSuccess = addSuccess && bst.contains(34);
-        addSuccess = addSuccess && bst.contains(10);
-        bst.add(2);
-        System.out.print(".");
-        bst.add(200);
-        System.out.print(".");
-        bst.add(44);
-        System.out.print(".");
-        System.out.println();
-        sizeSuccess = sizeSuccess && bst.size() == 6;
-        addSuccess = addSuccess && bst.contains(2);
-        addSuccess = addSuccess && bst.contains(200);
-        addSuccess = addSuccess && bst.contains(44);
+                System.out.print("Populating");
+                sizeSuccess[0] = bst.size() == 0;
+                bst.add(5);
+                System.out.print(".");
+                sizeSuccess[0] = sizeSuccess[0] && bst.size() == 1;
+                addSuccess = bst.contains(5);
+                bst.add(34);
+                System.out.print(".");
+                bst.add(10);
+                System.out.print(".");
+                sizeSuccess[0] = sizeSuccess[0] && bst.size() == 3;
+                addSuccess = addSuccess && bst.contains(34);
+                addSuccess = addSuccess && bst.contains(10);
+                bst.add(2);
+                System.out.print(".");
+                bst.add(200);
+                System.out.print(".");
+                bst.add(44);
+                System.out.print(".");
+                System.out.println();
+                sizeSuccess[0] = sizeSuccess[0] && bst.size() == 6;
+                addSuccess = addSuccess && bst.contains(2);
+                addSuccess = addSuccess && bst.contains(200);
+                addSuccess = addSuccess && bst.contains(44);
+                System.out.println();
 
-        // test
-        System.out.println("Add: *** TEST " + (addSuccess ? "PASSES" : "FAILS") + " ***");
-        System.out.println("Size: *** TEST " + (sizeSuccess ? "PASSES" : "FAILS") + " ***");
+                return addSuccess;
+            }
+        }));
+        testRunner.addTestCase(new ExternalMethodTestCase("size", new ExternalMethodTestCase.ExternalTest() {
+            @Override
+            public boolean execute() {
+                return sizeSuccess[0];
+            }
+        }));
+        testRunner.addTestCase(new ExternalMethodTestCase("serialize", new ExternalMethodTestCase.ExternalTest() {
+            @Override
+            public boolean execute() {
+                System.out.println();
+                System.out.println("State: " + bst.serialize());
+                boolean success = bst.serialize().contentEquals(new Bst<Integer>(bst.serialize()).serialize());
+                System.out.println("State: " + bst.serialize());
+                System.out.println();
 
-        System.out.println("State: " + bst.serialize());
-        addSuccess = bst.serialize().contentEquals(new Bst<Integer>(bst.serialize()).serialize());
-        System.out.println("Serialization: *** TEST " + (addSuccess ? "PASSES" : "FAILS") + " ***");
-        System.out.println("State: " + bst.serialize());
+                return success;
+            }
+        }));
+//        testRunner.addTestCase(new MethodTestCase<>(bst, "serialize", new Bst<Integer>(bst.serialize()).serialize()));
+        testRunner.addTestCase(new ExternalMethodTestCase("remove", new ExternalMethodTestCase.ExternalTest() {
+            @Override
+            public boolean execute() {
+                // teardown
+                System.out.println();
+                System.out.print("Resetting");
+                bst.remove(10);
+                System.out.print(".");
+                bst.remove(44);
+                System.out.print(".");
+                bst.remove(200);
+                System.out.print(".");
+                bst.remove(34);
+                System.out.print(".");
+                bst.remove(2);
+                System.out.print(".");
+                bst.remove(5);
+                System.out.println();
+                System.out.println();
+                System.out.println("State: " + bst.serialize());
+                System.out.println();
 
-        // teardown
-        System.out.print("Resetting");
-        bst.remove(10);
-        System.out.print(".");
-        bst.remove(44);
-        System.out.print(".");
-        bst.remove(200);
-        System.out.print(".");
-        bst.remove(34);
-        System.out.print(".");
-        bst.remove(2);
-        System.out.print(".");
-        bst.remove(5);
-        System.out.println();
+                return bst.isEmpty();
+            }
+        }));
+        testRunner.addTestCase(new MethodTestCase<>(LARGE, "getDepth", 4));
+        testRunner.addTestCase(new MethodTestCase<>(LARGE, "getEdgeWidth", 4));
+        testRunner.addTestCase(new MethodTestCase<>(LARGE, "getMaxWidth", 3));
 
-        System.out.println("Remove: *** TEST " + (bst.isEmpty() ? "PASSES" : "FAILS") + " ***");
-        System.out.println("State: " + bst.serialize());
-
-        // print footer
-        System.out.println();
-        System.out.println("====================");
-        System.out.println("        Fin");
-        System.out.println("====================");
-        System.out.println();
+        testRunner.addTestCase(new MethodTestCase<>(SMALL, "getDepth", 2));
+        testRunner.addTestCase(new MethodTestCase<>(SMALL, "getEdgeWidth", 2));
+        testRunner.addTestCase(new MethodTestCase<>(SMALL, "getMaxWidth", 2));
+        testRunner.runTests();
     }
 
+    /**
+     *     0
+     *    / \
+     *   0  0
+     *  /  / \
+     * 0  0   0
+     *   /   /
+     *  0   0
+     */
+    private static Bst<Integer> LARGE = new Bst<>();
+    static {
+        LARGE.add(3);
+        LARGE.add(6);
+        LARGE.add(8);
+        LARGE.add(7);
+        LARGE.add(5);
+        LARGE.add(4);
+        LARGE.add(2);
+        LARGE.add(1);
+    }
+
+    /**
+     *   0
+     *  / \
+     * 0   0
+     */
+    private static Bst<Integer> SMALL = new Bst<>();
+    static {
+        SMALL.add(2);
+        SMALL.add(1);
+        SMALL.add(3);
+    }
 }
