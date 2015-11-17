@@ -1,5 +1,6 @@
 package com.artbeatte.exercises;
 
+import com.artbeatte.exercises.bowlingball.BowlingBall;
 import com.artbeatte.exercises.bst.Bst;
 import com.artbeatte.exercises.hashs.HashMapWTime;
 import com.artbeatte.exercises.rects.Rect;
@@ -25,6 +26,7 @@ public class TestAll {
 
         // ElevatorBankTest.main(args);
 
+        BowlingBall.main(args);
         Rect.main(args);
     }
 }
