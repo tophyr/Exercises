@@ -44,7 +44,7 @@ public class RunLengthEncoding {
     }
 
     @SuppressWarnings("unused | InfiniteLoopStatement")
-    public String decode(String encoded) {
+    public static String decode(String encoded) {
         if (encoded == null || encoded.isEmpty()) return "";
         StringBuilder sb = new StringBuilder();
         char[] chars = encoded.toCharArray();
