@@ -19,23 +19,14 @@ public class LinkedListNode {
     }
 
     private LinkedListNode next;
-    private Object value;
 
     public LinkedListNode getNext() {
         incTraversals();
         return next;
     }
 
-    public Object getValue() {
-        return value;
-    }
-
     public void setNext(LinkedListNode next) {
         this.next = next;
-    }
-
-    public void setValue(Object value) {
-        this.value = value;
     }
 
     /**
