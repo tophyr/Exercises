@@ -1,9 +1,9 @@
 package com.artbeatte.exercises.hashs;
 
-import com.artbeatte.exercises.testing.ExternalTestCase;
-import com.artbeatte.exercises.testing.MethodTestCase;
-import com.artbeatte.exercises.testing.SystemTestRunner;
-import com.artbeatte.exercises.testing.TestRunner;
+import com.artbeatte.exercises.testrunner.ExternalTestCase;
+import com.artbeatte.exercises.testrunner.MethodTestCase;
+import com.artbeatte.exercises.testrunner.SystemTestRunner;
+import com.artbeatte.exercises.testrunner.TestRunner;
 
 import java.io.IOException;
 import java.io.OutputStream;

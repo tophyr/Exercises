@@ -1,8 +1,8 @@
 package com.artbeatte.exercises.bst;
 
-import com.artbeatte.exercises.testing.*;
-import com.artbeatte.exercises.testing.ExternalTestCase;
-import com.artbeatte.exercises.testing.MethodTestCase;
+import com.artbeatte.exercises.testrunner.*;
+import com.artbeatte.exercises.testrunner.ExternalTestCase;
+import com.artbeatte.exercises.testrunner.MethodTestCase;
 
 import java.io.IOException;
 import java.io.OutputStream;

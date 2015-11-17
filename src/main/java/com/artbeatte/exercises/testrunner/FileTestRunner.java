@@ -1,4 +1,4 @@
-package com.artbeatte.exercises.testing;
+package com.artbeatte.exercises.testrunner;
 
 import java.io.File;
 import java.io.FileOutputStream;

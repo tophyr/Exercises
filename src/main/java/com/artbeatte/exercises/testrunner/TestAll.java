@@ -1,4 +1,4 @@
-package com.artbeatte.exercises;
+package com.artbeatte.exercises.testrunner;
 
 import com.artbeatte.exercises.bowlingball.BowlingBall;
 import com.artbeatte.exercises.bst.Bst;

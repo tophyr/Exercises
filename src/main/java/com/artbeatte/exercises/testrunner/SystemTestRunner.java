@@ -1,6 +1,4 @@
-package com.artbeatte.exercises.testing;
-
-import java.io.IOException;
+package com.artbeatte.exercises.testrunner;
 
 /**
  * @author art.beatte

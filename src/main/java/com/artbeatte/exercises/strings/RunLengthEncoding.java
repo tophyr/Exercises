@@ -1,9 +1,9 @@
 package com.artbeatte.exercises.strings;
 
-import com.artbeatte.exercises.testing.MethodParameterTestCase;
-import com.artbeatte.exercises.testing.MethodTestCase;
-import com.artbeatte.exercises.testing.SystemTestRunner;
-import com.artbeatte.exercises.testing.TestRunner;
+import com.artbeatte.exercises.testrunner.MethodParameterTestCase;
+import com.artbeatte.exercises.testrunner.MethodTestCase;
+import com.artbeatte.exercises.testrunner.SystemTestRunner;
+import com.artbeatte.exercises.testrunner.TestRunner;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,8 +1,8 @@
 package com.artbeatte.exercises.linkedlist;
 
-import com.artbeatte.exercises.testing.ExternalTestCase;
-import com.artbeatte.exercises.testing.SystemTestRunner;
-import com.artbeatte.exercises.testing.TestRunner;
+import com.artbeatte.exercises.testrunner.ExternalTestCase;
+import com.artbeatte.exercises.testrunner.SystemTestRunner;
+import com.artbeatte.exercises.testrunner.TestRunner;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.IOException;
