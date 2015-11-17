@@ -3,6 +3,7 @@ package com.artbeatte.exercises;
 import com.artbeatte.exercises.bowlingball.BowlingBall;
 import com.artbeatte.exercises.bst.Bst;
 import com.artbeatte.exercises.hashs.HashMapWTime;
+import com.artbeatte.exercises.rects.Rect;
 import com.artbeatte.exercises.strings.RunLengthEncoding;
 import com.artbeatte.exercises.sudoku.Sudoku;
 
@@ -26,5 +27,6 @@ public class TestAll {
         // ElevatorBankTest.main(args);
 
         BowlingBall.main(args);
+        Rect.main(args);
     }
 }

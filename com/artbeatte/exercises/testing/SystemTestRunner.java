@@ -16,8 +16,8 @@ public class SystemTestRunner extends BaseTestRunner {
             boolean success = false;
             try {
                 success = test.execute(System.out);
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                success = false;
             }
             if (!success) failures ++;
             System.out.println(test.getName() + " test: " + (success ? "PASSES" : "FAILS"));
