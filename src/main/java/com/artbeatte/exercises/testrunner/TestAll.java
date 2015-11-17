@@ -1,12 +1,6 @@
 package com.artbeatte.exercises.testrunner;
 
-import com.artbeatte.exercises.bowlingball.BowlingBall;
-import com.artbeatte.exercises.bst.Bst;
-import com.artbeatte.exercises.hashs.HashMapWTime;
-import com.artbeatte.exercises.linkedlist.LinkedListNode;
-import com.artbeatte.exercises.rects.Rect;
-import com.artbeatte.exercises.strings.RunLengthEncoding;
-import com.artbeatte.exercises.sudoku.Sudoku;
+import com.artbeatte.exercises.testrunner.tests.*;
 
 /**
  * @author art.beatte
@@ -19,14 +13,14 @@ public class TestAll {
      * @param args system args
      */
     public static void main(String[] args) {
-        Bst.main(args);
-        RunLengthEncoding.main(args);
-        Sudoku.main(args);
-        HashMapWTime.main(args);
-        BowlingBall.main(args);
-        Rect.main(args);
-        LinkedListNode.main(args);
-        // MeetingScheduler.main(args);
+        BstTest.main(args);
+        RunLengthEncodingTest.main(args);
+        SudokuTest.main(args);
+        HashMapWTimeTest.main(args);
+        BowlingBallTest.main(args);
+        RectTest.main(args);
+        LinkedListNodeTest.main(args);
+        // MeetingSchedulerTest.main(args);
 
         // ElevatorBankTest.main(args);
     }
