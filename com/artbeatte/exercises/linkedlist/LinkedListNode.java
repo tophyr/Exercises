@@ -9,7 +9,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * Created by sarbs on 11/17/15.
+ * @author sarbs
+ * @version 11/17/15
  */
 public class LinkedListNode {
     private static int traversals;

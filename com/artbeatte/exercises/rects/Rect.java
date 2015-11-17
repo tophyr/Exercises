@@ -9,7 +9,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * Created by sarbs on 11/16/15.
+ * @author sarbs
+ * @version 11/16/15
  */
 public class Rect {
     private final double x;

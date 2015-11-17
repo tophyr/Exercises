@@ -23,12 +23,11 @@ public class TestAll {
         RunLengthEncoding.main(args);
         Sudoku.main(args);
         HashMapWTime.main(args);
-        // MeetingScheduler.main(args);
-
-        // ElevatorBankTest.main(args);
-
         BowlingBall.main(args);
         Rect.main(args);
         LinkedListNode.main(args);
+        // MeetingScheduler.main(args);
+
+        // ElevatorBankTest.main(args);
     }
 }
