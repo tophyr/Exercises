@@ -90,8 +90,8 @@ public class Bst<T extends Comparable<T>> {
             while (rightsLeftMost.getLeftNode() != null) {
                 rightsLeftMost = rightsLeftMost.getLeftNode();
             }
-            rightsLeftMost.setLeftNode(root.getRightNode());
-            root = rightsLeftMost;
+            rightsLeftMost.setLeftNode(root.getLeftNode());
+            root = root.getRightNode();
         }
         return root;
     }
