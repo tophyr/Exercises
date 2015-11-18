@@ -1,4 +1,4 @@
-package com.artbeatte.exercises.testing;
+package com.artbeatte.exercises.testrunner;
 
 import java.util.ArrayList;
 import java.util.List;
