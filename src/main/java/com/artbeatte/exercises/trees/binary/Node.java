@@ -1,4 +1,4 @@
-package com.artbeatte.exercises.bst;
+package com.artbeatte.exercises.trees.binary;
 
 /**
  * @author art.beatte

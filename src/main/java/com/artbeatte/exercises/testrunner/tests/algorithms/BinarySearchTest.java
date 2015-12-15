@@ -4,7 +4,7 @@ import com.artbeatte.exercises.algorithms.searching.BinarySearch;
 import com.artbeatte.exercises.testrunner.RuntimeTestCase;
 import com.artbeatte.exercises.testrunner.SystemTestRunner;
 import com.artbeatte.exercises.testrunner.TestRunner;
-import com.artbeatte.exercises.testrunner.generic.ArrayTestCases;
+import com.artbeatte.exercises.testrunner.testcases.generic.ArrayTestCases;
 
 import java.io.IOException;
 import java.io.OutputStream;

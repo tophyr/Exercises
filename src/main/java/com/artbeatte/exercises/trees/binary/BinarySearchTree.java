@@ -1,4 +1,4 @@
-package com.artbeatte.exercises.bst;
+package com.artbeatte.exercises.trees.binary;
 
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -8,16 +8,16 @@ import java.util.StringTokenizer;
  * @version 10/18/15
  * @version 11/14/15
  */
-public class Bst<T extends Comparable<T>> {
+public class BinarySearchTree<T extends Comparable<T>> {
 
     private Node<T> mRoot;
 
     // region init
-    public Bst() {
+    public BinarySearchTree() {
         mRoot = null;
     }
 
-    public Bst(String data) {
+    public BinarySearchTree(String data) {
         this();
         if (data != null && data.length() > 0) {
             StringTokenizer st = new StringTokenizer(data, " ");

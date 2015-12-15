@@ -1,7 +1,7 @@
 package com.artbeatte.exercises.testrunner.tests;
 
-import com.artbeatte.exercises.bst.Bst;
-import com.artbeatte.exercises.bst.BstTestCase;
+import com.artbeatte.exercises.trees.binary.BinarySearchTree;
+import com.artbeatte.exercises.trees.binary.BstTestCase;
 import com.artbeatte.exercises.testrunner.ExternalTestCase;
 import com.artbeatte.exercises.testrunner.MethodTestCase;
 import com.artbeatte.exercises.testrunner.SystemTestRunner;
@@ -17,7 +17,7 @@ import java.io.OutputStream;
 public class BstTest {
 
     public static void main(String[] args) {
-        final Bst<Integer> bst = new Bst<>();
+        final BinarySearchTree<Integer> bst = new BinarySearchTree<>();
         final boolean[] sizeSuccess = {false};
 
         TestRunner testRunner = new SystemTestRunner();
@@ -69,14 +69,14 @@ public class BstTest {
             public boolean execute(OutputStream os) throws IOException {
                 os.write("\n".getBytes());
                 os.write(("State: " + bst.serialize() + "\n").getBytes());
-                boolean success = bst.serialize().contentEquals(new Bst<Integer>(bst.serialize()).serialize());
+                boolean success = bst.serialize().contentEquals(new BinarySearchTree<Integer>(bst.serialize()).serialize());
                 os.write(("State: " + bst.serialize() + "\n").getBytes());
                 os.write("\n".getBytes());
 
                 return success;
             }
         }));
-//        testRunner.addTestCase(new MethodTestCase<>(bst, "serialize", new Bst<Integer>(bst.serialize()).serialize()));
+//        testRunner.addTestCase(new MethodTestCase<>(binary, "serialize", new BinarySearchTree<Integer>(binary.serialize()).serialize()));
         testRunner.addTestCase(new ExternalTestCase("remove", new ExternalTestCase.ExternalTest() {
             @Override
             public boolean execute(OutputStream os) throws IOException {

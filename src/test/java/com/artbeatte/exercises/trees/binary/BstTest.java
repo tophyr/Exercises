@@ -1,4 +1,4 @@
-package com.artbeatte.exercises.bst;
+package com.artbeatte.exercises.trees.binary;
 
 import org.junit.Test;
 
@@ -13,7 +13,7 @@ public class BstTest {
 
     @Test
     public void testAdd() {
-        Bst<Integer> bst = new Bst<>();
+        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
         bst.add(3);
         assertEquals("Add to empty is wrong", bst.size(), 1);
         bst.add(2);
@@ -25,7 +25,7 @@ public class BstTest {
 
     @Test
     public void testSize() {
-        Bst<Integer> bst = new Bst<>();
+        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
         assertEquals("Initial size is wrong", bst.size(), 0);
         bst.add(3);
         assertEquals("Size is wrong", bst.size(), 1);
@@ -33,14 +33,14 @@ public class BstTest {
 
     @Test
     public void testSerialize() {
-        Bst<Integer> bst = BstTestCase.LARGE;
+        BinarySearchTree<Integer> bst = BstTestCase.LARGE;
         assertEquals("Serialization is wrong", bst.serialize(), "3 6 8 # 7 # # 5 # 4 # # 2 # 1 # # ");
-        assertEquals("Deserialization is wrong", new Bst<Integer>(bst.serialize()).serialize(), bst.serialize());
+        assertEquals("Deserialization is wrong", new BinarySearchTree<Integer>(bst.serialize()).serialize(), bst.serialize());
     }
 
     @Test
     public void testRemove() {
-        Bst<Integer> bst = BstTestCase.EMPTY;
+        BinarySearchTree<Integer> bst = BstTestCase.EMPTY;
         Integer removed = bst.remove(3);
         assertEquals("Remove with existing is wrong", bst.size(), 0);
         assertNull("Removed null object is wrong", removed);
@@ -54,7 +54,7 @@ public class BstTest {
         assertEquals("Remove with existing is wrong", bst.size(), 5);
     }
 
-    private void testBasicGets(Bst bst, int depth, int edgeWidth, int maxWidth) {
+    private void testBasicGets(BinarySearchTree bst, int depth, int edgeWidth, int maxWidth) {
         assertEquals("getDepth is wrong", bst.getDepth(), depth);
         assertEquals("getEdgeWidth is wrong", bst.getEdgeWidth(), edgeWidth);
         assertEquals("getMaxWidth is wrong", bst.getMaxWidth(), maxWidth);
