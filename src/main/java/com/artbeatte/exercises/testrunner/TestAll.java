@@ -1,6 +1,7 @@
 package com.artbeatte.exercises.testrunner;
 
 import com.artbeatte.exercises.testrunner.tests.*;
+import com.artbeatte.exercises.testrunner.tests.algorithms.BinarySearchTest;
 
 /**
  * @author art.beatte
@@ -13,6 +14,7 @@ public class TestAll {
      * @param args system args
      */
     public static void main(String[] args) {
+        // implementations
         BstTest.main(args);
         RunLengthEncodingTest.main(args);
         SudokuTest.main(args);
@@ -22,6 +24,10 @@ public class TestAll {
         LinkedListNodeTest.main(args);
         // MeetingSchedulerTest.main(args);
 
+        // algorithms
+        BinarySearchTest.main(args);
+
+        // programs
         // ElevatorBankTest.main(args);
     }
 }
