@@ -1,7 +1,6 @@
 package com.artbeatte.exercises.linkedlist;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
+import com.artbeatte.exercises.NotImplementedException;
 
 /**
  * @author sarbs
