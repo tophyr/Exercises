@@ -1,13 +1,17 @@
-package com.artbeatte.exercises.strings;
+package com.artbeatte.exercises.runlengthencoding;
+
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author art.beatte
  * @version 11/17/15
  */
-public class RunLengthEncodingTestCase {
+public class RunLengthEncodingTest {
 
     public static final String EMPTY = "";
     public static final String ONE = "j";
@@ -18,6 +22,7 @@ public class RunLengthEncodingTestCase {
     public static final String TEST = "aabcccd1111111111d";
 
     public static final Map<String, String> TESTS = new HashMap<>();
+
     static {
         TESTS.put(EMPTY, "");
         TESTS.put(ONE, "j");
@@ -26,5 +31,21 @@ public class RunLengthEncodingTestCase {
         TESTS.put(NUMBERS, "BCE2D");
         TESTS.put(MIXED, "F2jac7DECE2k");
         TESTS.put(TEST, "a2bc3dB10d");
+    }
+
+    public static final RunLengthEncoding RLE = new SampleRLE();
+
+    @Test
+    public void testEncode() {
+        for (String test : TESTS.keySet()) {
+            assertEquals("Encoding is wrong", TESTS.get(test), RLE.encode(test));
+        }
+    }
+
+    @Test
+    public void testDecode() {
+        for (String test : TESTS.keySet()) {
+            assertEquals("Decoding is wrong", test, RLE.decode(RLE.encode(test)));
+        }
     }
 }

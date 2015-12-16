@@ -1,12 +1,10 @@
 package com.artbeatte.exercises.rects;
 
-import com.artbeatte.exercises.NotImplementedException;
-
 /**
  * @author sarbs
  * @version 11/16/15
  */
-public class Rect {
+public final class Rect {
     private final double x;
     private final double y;
     private final double width;
@@ -36,19 +34,9 @@ public class Rect {
      * @param height The height of the rectangle. Must be >0.
      */
     public Rect(double x, double y, double width, double height) {
-        throw new NotImplementedException();
-    }
-
-    /**
-     * Calculates the intersection (overlapping area) of two rectangles.
-     *
-     * @param a A rectangle
-     * @param b Another rectangle
-     * @return A new Rect object holding the overlapping area of the two given rectangles,
-     *         OR null if the two rectangles do not intersect.
-     * @throws IllegalArgumentException if either parameter is null.
-     */
-    public static Rect intersection(Rect a, Rect b)  {
-        throw new NotImplementedException();
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
     }
 }
