@@ -1,6 +1,6 @@
 package com.artbeatte.exercises.bowlingball;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import com.artbeatte.exercises.NotImplementedException;
 
 /**
  * @author sarbs
